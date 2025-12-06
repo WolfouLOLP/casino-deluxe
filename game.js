@@ -655,3 +655,91 @@ function sellItem(itemName) {
 
 // Lien bouton fermer magasin
 document.getElementById('close-shop').onclick = closeShop;
+
+
+updateTokens();
+
+function updateTokens(){
+  const balance = document.getElementById('token-balance');
+  balance.innerText = `Jetons : ${playerTokens}`;
+  localStorage.setItem('playerTokens', playerTokens);
+  saveLeaderboard();
+  balance.classList.add('animate');
+  setTimeout(()=>balance.classList.remove('animate'),300);
+}
+
+function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+// ---------------------------
+// RECHARGER JETONS
+// ---------------------------
+document.getElementById('refill-tokens').onclick = ()=>{
+  if(playerTokens>0){ alert("Tu as encore des jetons !"); return; }
+  playerTokens=100;
+  updateTokens();
+  alert("Tes jetons ont été rechargés !");
+}
+
+// ---------------------------
+// ANIMATION JETONS
+// ---------------------------
+function animateTokens(count){
+  const container = document.getElementById('token-animation');
+  for(let i=0;i<count;i++){
+    const token = document.createElement('div');
+    token.innerText='💰';
+    token.style.position='absolute';
+    token.style.fontSize=`${10+Math.random()*20}px`;
+    token.style.left=`${Math.random()*window.innerWidth}px`;
+    token.style.top='-30px';
+    token.style.opacity=1;
+    token.style.transition='transform 2s ease, opacity 2s ease';
+    container.appendChild(token);
+    setTimeout(()=>{
+      token.style.transform=`translateY(${window.innerHeight+50}px) rotate(${Math.random()*360}deg)`;
+      token.style.opacity=0;
+    },50);
+    setTimeout(()=>container.removeChild(token),2100);
+  }
+}
+
+// ---------------------------
+// OUVRIR / FERMER JEUX
+// ---------------------------
+function openGame(name){
+  document.getElementById('menu').classList.add('hidden');
+  document.getElementById('leaderboard-area').classList.add('hidden');
+  const area = document.getElementById('game-area');
+  const container = document.getElementById('game-container');
+  area.classList.remove('hidden');
+  container.innerHTML='';
+
+  switch(name){
+    case 'slots': loadSlots(container); break;
+    case 'roulette': loadRoulette(container); break;
+    case 'dice': loadDice(container); break;
+    case 'wheel': loadWheel(container); break;
+    case 'coinFlip': loadCoinFlip(container); break;
+    case 'guessNumber': loadGuessNumber(container); break;
+    case 'bingo': loadBingo(container); break;
+    case 'archery': loadArchery(container); break;
+    case 'treasure': loadTreasure(container); break;
+    case 'magicCoin': loadMagicCoin(container); break;
+    case 'colorWheel': loadColorWheel(container); break;
+  }
+}
+
+function closeGame(){ document.getElementById('game-area').classList.add('hidden'); document.getElementById('menu').classList.remove('hidden'); updateTokens(); }
+
+// ---------------------------
+// MINI-JEUX EXISTANTS
+// ... (ton code actuel des jeux existants ici)
+// ---------------------------
+
+// ---------------------------
+// NOUVEAUX JEUX
+function loadBingo(container){ container.innerHTML=`<h2>🎯 Bingo rapide</h2><p>Jeu en développement</p>`; }
+function loadArchery(container){ container.innerHTML=`<h2>🏹 Tir à l'arc</h2><p>Jeu en développement</p>`; }
+function loadTreasure(container){ container.innerHTML=`<h2>🏝 Chasse au trésor</h2><p>Jeu en développement</p>`; }
+function loadMagicCoin(container){ container.innerHTML=`<h2>✨ Pile magique</h2><p>Jeu en développement</p>`; }
+function loadColorWheel(container){ container.innerHTML=`<h2>🎨 Roulette des couleurs</h2><p>Jeu en développement</p>`; }
