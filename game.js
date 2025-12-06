@@ -703,31 +703,8 @@ function animateTokens(count){
   }
 }
 
-// ---------------------------
-// OUVRIR / FERMER JEUX
-// ---------------------------
-function openGame(name){
-  document.getElementById('menu').classList.add('hidden');
-  document.getElementById('leaderboard-area').classList.add('hidden');
-  const area = document.getElementById('game-area');
-  const container = document.getElementById('game-container');
-  area.classList.remove('hidden');
-  container.innerHTML='';
-
-  switch(name){
-    case 'slots': loadSlots(container); break;
-    case 'roulette': loadRoulette(container); break;
-    case 'dice': loadDice(container); break;
-    case 'wheel': loadWheel(container); break;
-    case 'coinFlip': loadCoinFlip(container); break;
-    case 'guessNumber': loadGuessNumber(container); break;
-    case 'bingo': loadBingo(container); break;
-    case 'archery': loadArchery(container); break;
-    case 'treasure': loadTreasure(container); break;
-    case 'magicCoin': loadMagicCoin(container); break;
-    case 'colorWheel': loadColorWheel(container); break;
-  }
 }
 
 function closeGame(){ document.getElementById('game-area').classList.add('hidden'); document.getElementById('menu').classList.remove('hidden'); updateTokens(); }
+
 
