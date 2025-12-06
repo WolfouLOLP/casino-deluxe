@@ -5,7 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mini Casino</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../public/style.css">
+  <!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+
 </head>
 <body>
   <!-- HEADER -->
@@ -15,6 +19,20 @@
   </header>
 
   <!-- MENU PRINCIPAL -->
+
+ <div id="authBox" class="auth-box">
+    <h2>Connexion</h2>
+
+    <input type="text" id="auth-username" placeholder="Nom d'utilisateur">
+    <input type="password" id="auth-password" placeholder="Mot de passe">
+
+    <button id="login-btn">Se connecter</button>
+    <button id="register-btn">Créer un compte</button>
+
+    <p id="auth-msg"></p>
+</div>
+
+
   <section id="menu" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:30px;">
     <button class="game-btn" onclick="openGame('slots')">🎰 Slots</button>
     <button class="game-btn" onclick="openGame('roulette')">🎡 Roulette</button>
@@ -31,6 +49,7 @@
     <div id="game-container"></div>
    
   </section>
+  
 
   <!-- LEADERBOARD -->
   <section id="leaderboard-area" class="hidden" style="margin-top:30px; max-width:600px; width:90%; margin:auto;">
@@ -45,9 +64,8 @@
 
 
 
-  <script src="../game.js"></script>
+  <script src="../public/game.js"></script>
 </body>
 
 
 </html>
-
