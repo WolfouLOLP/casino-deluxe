@@ -463,77 +463,6 @@ function login() {
 // AUTH SYSTEM
 // ---------------------------
 
-document.addEventListener("DOMContentLoaded", () => {
-    checkLoginStatus();
-});
-
-// LOGIN CONFIRMED → hide box
-function checkLoginStatus() {
-    const user = localStorage.getItem("connectedUser");
-
-    if (user) {
-        const box = document.getElementById("authBox");
-        if (box) box.style.display = "none";
-    }
-}
-
-document.getElementById("login-btn").onclick = () => {
-    const user = document.getElementById("auth-username").value.trim();
-    const pass = document.getElementById("auth-password").value;
-    const msg = document.getElementById("auth-msg");
-
-    const saved = localStorage.getItem("user_" + user);
-    if (!saved) {
-        msg.textContent = "Compte introuvable.";
-        msg.style.color = "red";
-        return;
-    }
-
-    const data = JSON.parse(saved);
-
-    if (data.password !== pass) {
-        msg.textContent = "Mot de passe incorrect.";
-        msg.style.color = "red";
-        return;
-    }
-
-    msg.textContent = "Connecté !";
-    msg.style.color = "lime";
-
-    localStorage.setItem("connectedUser", user);
-
-    setTimeout(() => {
-        document.getElementById("authBox").style.display = "none";
-        location.reload();
-    }, 400);
-};
-
-document.getElementById("register-btn").onclick = () => {
-    const user = document.getElementById("auth-username").value.trim();
-    const pass = document.getElementById("auth-password").value;
-    const msg = document.getElementById("auth-msg");
-
-    if (user.length < 3) {
-        msg.textContent = "Nom trop court.";
-        msg.style.color = "red";
-        return;
-    }
-
-    if (localStorage.getItem("user_" + user)) {
-        msg.textContent = "Ce nom est déjà pris.";
-        msg.style.color = "red";
-        return;
-    }
-
-    localStorage.setItem("user_" + user, JSON.stringify({
-        username: user,
-        password: pass,
-        tokens: 100
-    }));
-
-    msg.textContent = "Compte créé !";
-    msg.style.color = "lime";
-};
 
 // -----------------------------------
 //  DOUBLE OU RIEN (NOUVELLE FONCTION)
@@ -704,6 +633,78 @@ function animateTokens(count){
 }
 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    checkLoginStatus();
+});
+
+// LOGIN CONFIRMED → hide box
+function checkLoginStatus() {
+    const user = localStorage.getItem("connectedUser");
+
+    if (user) {
+        const box = document.getElementById("authBox");
+        if (box) box.style.display = "none";
+    }
+}
+
+document.getElementById("login-btn").onclick = () => {
+    const user = document.getElementById("auth-username").value.trim();
+    const pass = document.getElementById("auth-password").value;
+    const msg = document.getElementById("auth-msg");
+
+    const saved = localStorage.getItem("user_" + user);
+    if (!saved) {
+        msg.textContent = "Compte introuvable.";
+        msg.style.color = "red";
+        return;
+    }
+
+    const data = JSON.parse(saved);
+
+    if (data.password !== pass) {
+        msg.textContent = "Mot de passe incorrect.";
+        msg.style.color = "red";
+        return;
+    }
+
+    msg.textContent = "Connecté !";
+    msg.style.color = "lime";
+
+    localStorage.setItem("connectedUser", user);
+
+    setTimeout(() => {
+        document.getElementById("authBox").style.display = "none";
+        location.reload();
+    }, 400);
+};
+
+document.getElementById("register-btn").onclick = () => {
+    const user = document.getElementById("auth-username").value.trim();
+    const pass = document.getElementById("auth-password").value;
+    const msg = document.getElementById("auth-msg");
+
+    if (user.length < 3) {
+        msg.textContent = "Nom trop court.";
+        msg.style.color = "red";
+        return;
+    }
+
+    if (localStorage.getItem("user_" + user)) {
+        msg.textContent = "Ce nom est déjà pris.";
+        msg.style.color = "red";
+        return;
+    }
+
+    localStorage.setItem("user_" + user, JSON.stringify({
+        username: user,
+        password: pass,
+        tokens: 100
+    }));
+
+    msg.textContent = "Compte créé !";
+    msg.style.color = "lime";
+};
 
 
 
