@@ -2,7 +2,7 @@
 // INITIALISATION DU JOUEUR
 // ---------------------------
 let playerTokens = parseInt(localStorage.getItem('playerTokens'), 10);
-if (isNaN(playerTokens)) playerTokens = 100;
+if (isNaN(playerTokens)) playerTokens = 500000;
 
 if (!localStorage.getItem('playerName')) {
   const pseudo = prompt("Bienvenue au casino ! Choisis ton pseudo :", "Joueur");
@@ -534,3 +534,124 @@ document.getElementById("register-btn").onclick = () => {
     msg.textContent = "Compte créé !";
     msg.style.color = "lime";
 };
+
+// -----------------------------------
+//  DOUBLE OU RIEN (NOUVELLE FONCTION)
+// -----------------------------------
+
+const doubleBtn = document.getElementById("double-or-nothing");
+
+// Vérifie l'affichage du bouton
+function checkDoubleOrNothing() {
+    if (playerTokens >= 500000) {
+        doubleBtn.style.display = "block";
+    } else {
+        doubleBtn.style.display = "none";
+    }
+}
+
+// On l'appelle dans updateTokens
+const originalUpdateTokens = updateTokens;
+updateTokens = function () {
+    originalUpdateTokens();
+    checkDoubleOrNothing();
+};
+
+// Logique du jeu Double ou Rien
+doubleBtn.onclick = () => {
+    if (playerTokens < 500000) return;
+
+    const confirmPlay = confirm(
+        "⚠️ DOUBLE OU RIEN ⚠️\n\nTu peux doubler tes jetons… ou tout perdre.\nTu es sûr ?"
+    );
+
+    if (!confirmPlay) return;
+
+    const win = Math.random() < 0.4; // 60/40
+
+    if (win) {
+        playerTokens *= 2;
+        alert("🔥 INCROYABLE ! TU AS DOUBLÉ TES JETONS !");
+        animateTokens(50);
+    } else {
+        playerTokens = 0; 
+        alert("💀 MALHEUR… TU AS TOUT PERDU.");
+    }
+
+    updateTokens();
+};
+
+// ---------------------------
+// MAGASIN
+// ---------------------------
+const shopInventory = [
+  { name: "Potion", price: 500 },
+  { name: "Épée", price: 5000 },
+  { name: "Armure", price: 10000 },
+  { name: "Objet Mystère", price: 50000 }
+];
+
+let playerInventory = JSON.parse(localStorage.getItem('playerInventory') || '[]');
+
+function openShop() {
+  document.getElementById('menu').classList.add('hidden');
+  document.getElementById('game-area').classList.add('hidden');
+  document.getElementById('shop-area').classList.remove('hidden');
+
+  updateShopDisplay();
+}
+
+function closeShop() {
+  document.getElementById('shop-area').classList.add('hidden');
+  document.getElementById('menu').classList.remove('hidden');
+}
+
+function updateShopDisplay() {
+  const tokenDisplay = document.getElementById('shop-tokens');
+  tokenDisplay.innerText = playerTokens;
+
+  const shopList = document.getElementById('shop-items');
+  shopList.innerHTML = '';
+
+  shopInventory.forEach(item => {
+    const li = document.createElement('li');
+    li.innerHTML = `${item.name} — ${item.price} jetons 
+      <button onclick="buyItem('${item.name}')">Acheter</button>
+      <button onclick="sellItem('${item.name}')">Vendre</button>`;
+    shopList.appendChild(li);
+  });
+}
+
+function buyItem(itemName) {
+  const item = shopInventory.find(i => i.name === itemName);
+  if(!item) return;
+  if(playerTokens < item.price){
+    alert("Pas assez de jetons !");
+    return;
+  }
+  playerTokens -= item.price;
+  playerInventory.push(itemName);
+  localStorage.setItem('playerInventory', JSON.stringify(playerInventory));
+  updateTokens();
+  updateShopDisplay();
+  alert(`Vous avez acheté : ${itemName}`);
+}
+
+function sellItem(itemName) {
+  const index = playerInventory.indexOf(itemName);
+  if(index === -1){
+    alert("Vous n'avez pas cet objet !");
+    return;
+  }
+  const item = shopInventory.find(i => i.name === itemName);
+  const sellPrice = Math.floor(item.price / 2); // Revendre à moitié prix
+  playerTokens += sellPrice;
+  playerInventory.splice(index,1);
+  localStorage.setItem('playerInventory', JSON.stringify(playerInventory));
+  updateTokens();
+  updateShopDisplay();
+  alert(`Vous avez vendu : ${itemName} pour ${sellPrice} jetons`);
+}
+
+// Lien bouton fermer magasin
+document.getElementById('close-shop').onclick = closeShop;

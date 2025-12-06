@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mini Casino</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../public/style.css">
   <!-- Google Identity Services -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
@@ -41,8 +41,15 @@
     <button class="game-btn" onclick="openGame('coinFlip')">🪙 Pile ou Face</button>
     <button class="game-btn" onclick="openGame('guessNumber')">🔢 Chiffre Mystère</button>
     <button class="game-btn" onclick="openGame('blackjack')">🃏 Blackjack</button>
+    <button id="double-or-nothing" class="special-btn" style="display:none;">
+    🎲 DOUBLE OU RIEN 🎲
+</button>
+
     <button class="game-btn" onclick="openLeaderboard()">🏆 Leaderboard</button>
   </section>
+  
+  <button onclick="window.location.href='magasin.html'">🛒 Magasin</button>
+
 
   <!-- GAME AREA -->
   <section id="game-area" class="hidden" style="margin-top:30px; max-width:600px; width:90%; margin:auto; padding:20px;">
@@ -64,9 +71,8 @@
 
 
 
-  <script src="../game.js"></script>
+  <script src="../public/game.js"></script>
 </body>
 
 
 </html>
-
