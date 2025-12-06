@@ -731,15 +731,3 @@ function openGame(name){
 
 function closeGame(){ document.getElementById('game-area').classList.add('hidden'); document.getElementById('menu').classList.remove('hidden'); updateTokens(); }
 
-// ---------------------------
-// MINI-JEUX EXISTANTS
-// ... (ton code actuel des jeux existants ici)
-// ---------------------------
-
-// ---------------------------
-// NOUVEAUX JEUX
-function loadBingo(container){ container.innerHTML=`<h2>🎯 Bingo rapide</h2><p>Jeu en développement</p>`; }
-function loadArchery(container){ container.innerHTML=`<h2>🏹 Tir à l'arc</h2><p>Jeu en développement</p>`; }
-function loadTreasure(container){ container.innerHTML=`<h2>🏝 Chasse au trésor</h2><p>Jeu en développement</p>`; }
-function loadMagicCoin(container){ container.innerHTML=`<h2>✨ Pile magique</h2><p>Jeu en développement</p>`; }
-function loadColorWheel(container){ container.innerHTML=`<h2>🎨 Roulette des couleurs</h2><p>Jeu en développement</p>`; }
