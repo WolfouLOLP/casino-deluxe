@@ -707,4 +707,79 @@ function animateTokens(count){
 
 function closeGame(){ document.getElementById('game-area').classList.add('hidden'); document.getElementById('menu').classList.remove('hidden'); updateTokens(); }
 
+// ---------------------------
+// INIT
+// ---------------------------
+let playerTokens = 0;
+
+// Vérifier si un compte est connecté
+window.addEventListener('DOMContentLoaded', () => {
+  const currentUser = localStorage.getItem('currentUser');
+  if(currentUser) {
+    showMainApp(currentUser);
+  } else {
+    document.getElementById('login-box').classList.remove('hidden');
+  }
+});
+
+// ---------------------------
+// BOUTON CONNEXION
+// ---------------------------
+document.getElementById('login-btn').onclick = () => {
+  const username = document.getElementById('username').value.trim();
+  if(!username) {
+    document.getElementById('login-msg').innerText = "Entrez un pseudo !";
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem('users') || '{}');
+
+  if(!users[username]) {
+    // Créer compte
+    users[username] = { tokens: 100 };
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  localStorage.setItem('currentUser', username);
+  playerTokens = users[username].tokens;
+
+  showMainApp(username);
+};
+
+// ---------------------------
+// AFFICHER L'APP PRINCIPALE
+// ---------------------------
+function showMainApp(username) {
+  document.getElementById('login-box').classList.add('hidden');
+  document.getElementById('main-app').classList.remove('hidden');
+  document.getElementById('player-name').innerText = username;
+  updateTokens();
+}
+
+// ---------------------------
+// LOGOUT
+// ---------------------------
+document.getElementById('logout-btn').onclick = () => {
+  saveTokens();
+  localStorage.removeItem('currentUser');
+  document.getElementById('main-app').classList.add('hidden');
+  document.getElementById('login-box').classList.remove('hidden');
+  document.getElementById('login-msg').innerText = '';
+};
+
+// ---------------------------
+// MISE À JOUR DES JETONS
+// ---------------------------
+function updateTokens() {
+  document.getElementById('token-balance').innerText = playerTokens;
+}
+
+function saveTokens() {
+  const username = localStorage.getItem('currentUser');
+  if(!username) return;
+  let users = JSON.parse(localStorage.getItem('users') || '{}');
+  users[username].tokens = playerTokens;
+  localStorage.setItem('users', JSON.stringify(users));
+}
+
 
